@@ -15,3 +15,9 @@ $(document).ready(function () {
         $('#page-content-wrapper').load('PassFolder3.html');
     })
 });
+
+$(document).ready(function () {
+    $('#indexPanel').click(function () {
+        $('#page-content-wrapper').load('indexPanel.html');
+    })
+});
