@@ -23,9 +23,39 @@ $(document).ready(function () {
 });
 
 $(document).ready(function () {
-    // Clear local storage on page load (optional, remove if you want to keep data)
-    localStorage.clear();
-    console.log("Local Storage Cleared!");
+    $('#Login').click(function () {
+        $('#page-content-wrapper').load('Login.html');
+    })
+});
+
+$(document).ready(function () {
+    // Check if user is logged in
+    if (window.location.pathname !== "/login.html" && localStorage.getItem("isLoggedIn") !== "true") {
+        window.location.href = "login.html"; // Redirect to login page if not logged in
+    }
+
+    // Login functionality
+    $("#loginBtn").click(function () {
+        let username = $("#loginUser").val();
+        let password = $("#loginPass").val();
+
+        // Set a default login (change this for production use)
+        const correctUsername = "admin";
+        const correctPassword = "password123";
+
+        if (username === correctUsername && password === correctPassword) {
+            localStorage.setItem("isLoggedIn", "true");
+            window.location.href = "index.html"; // Redirect to main page
+        } else {
+            $("#loginError").show(); // Show error message
+        }
+    });
+
+    // Logout functionality
+    $("#logoutBtn").click(function () {
+        localStorage.removeItem("isLoggedIn");
+        window.location.href = "login.html"; // Redirect to login page
+    });
 
     // Function to get the selected folder
     function getSelectedFolder() {
@@ -60,7 +90,7 @@ $(document).ready(function () {
     $(".nav-link").click(function (e) {
         e.preventDefault();
         let page = $(this).attr("id") + ".html";
-        let folder = $(this).attr("id"); // Get folder name from link ID
+        let folder = $(this).attr("id");
 
         $("#page-content-wrapper").load(page, function () {
             let nameStoredValue = localStorage.getItem(folder + "_nameSavedInput") || "No username entered";
