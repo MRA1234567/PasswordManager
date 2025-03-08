@@ -23,58 +23,55 @@ $(document).ready(function () {
 });
 
 $(document).ready(function () {
-    $("#passSaveInput").click(function () {
-        let passUserInput = $("#passUserInput").val(); // Get input value
-        localStorage.setItem("passSavedInput", passUserInput); // Store it
-        console.log("Pass Saved Input:", passUserInput); // Debugging
-    });
+    // Clear local storage on page load (optional, remove if you want to keep data)
+    localStorage.clear();
+    console.log("Local Storage Cleared!");
 
-    $(".nav-link").click(function (e) {
-        e.preventDefault();
+    // Function to get the selected folder
+    function getSelectedFolder() {
+        return $("#folderSelect").val();
+    }
 
-        let page = $(this).attr("id") + ".html";
-        $("#page-content-wrapper").load(page, function () {
-            let passStoredValue = localStorage.getItem("passSavedInput") || "No password entered";
-            console.log("Loading Page:", page, "Pass Stored Value:", passStoredValue); // Debugging
-            $("#page-content-wrapper #passDisplayData").text("Password: " + passStoredValue);
-        });
-    });
-});
-
-$(document).ready(function () {
+    // Save Username
     $("#nameSaveInput").click(function () {
-        let nameUserInput = $("#nameUserInput").val(); // Get input value
-        localStorage.setItem("nameSavedInput", nameUserInput); // Store it
-        console.log("Name Saved Input:", nameUserInput); // Debugging
+        let folder = getSelectedFolder();
+        let nameUserInput = $("#nameUserInput").val();
+        localStorage.setItem(folder + "_nameSavedInput", nameUserInput);
+        console.log("Saved Username for", folder, ":", nameUserInput);
     });
 
-    $(".nav-link").click(function (e) {
-        e.preventDefault();
-
-        let page = $(this).attr("id") + ".html";
-        $("#page-content-wrapper").load(page, function () {
-            let nameStoredValue = localStorage.getItem("nameSavedInput") || "No username entered";
-            console.log("Loading Page:", page, "Name Stored Value:", nameStoredValue); // Debugging
-            $("#page-content-wrapper #nameDisplayData").text("Username: " + nameStoredValue);
-        });
-    });
-});
-
-$(document).ready(function () {
+    // Save Email
     $("#emailSaveInput").click(function () {
-        let passUserInput = $("#emailUserInput").val(); // Get input value
-        localStorage.setItem("emailSavedInput", emailUserInput); // Store it
-        console.log("Email Saved Input:", emailUserInput); // Debugging
+        let folder = getSelectedFolder();
+        let emailUserInput = $("#emailUserInput").val();
+        localStorage.setItem(folder + "_emailSavedInput", emailUserInput);
+        console.log("Saved Email for", folder, ":", emailUserInput);
     });
 
+    // Save Password
+    $("#passSaveInput").click(function () {
+        let folder = getSelectedFolder();
+        let passUserInput = $("#passUserInput").val();
+        localStorage.setItem(folder + "_passSavedInput", passUserInput);
+        console.log("Saved Password for", folder, ":", passUserInput);
+    });
+
+    // Load pages dynamically & update stored values
     $(".nav-link").click(function (e) {
         e.preventDefault();
-
         let page = $(this).attr("id") + ".html";
+        let folder = $(this).attr("id"); // Get folder name from link ID
+
         $("#page-content-wrapper").load(page, function () {
-            let emailStoredValue = localStorage.getItem("emailSavedInput") || "No email entered";
-            console.log("Loading Page:", page, "Email Stored Value:", emailStoredValue); // Debugging
+            let nameStoredValue = localStorage.getItem(folder + "_nameSavedInput") || "No username entered";
+            let emailStoredValue = localStorage.getItem(folder + "_emailSavedInput") || "No email entered";
+            let passStoredValue = localStorage.getItem(folder + "_passSavedInput") || "No password entered";
+
+            console.log("Loading Page:", page, "Folder:", folder, "Data:", nameStoredValue, emailStoredValue, passStoredValue);
+
+            $("#page-content-wrapper #nameDisplayData").text("Username: " + nameStoredValue);
             $("#page-content-wrapper #emailDisplayData").text("Email: " + emailStoredValue);
+            $("#page-content-wrapper #passDisplayData").text("Password: " + passStoredValue);
         });
     });
 });

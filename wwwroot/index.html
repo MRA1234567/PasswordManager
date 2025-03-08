@@ -28,18 +28,33 @@
 
     <!-- Dynamic content area -->
     <div id="page-content-wrapper" class="container mt-5">
-        <label for="userInput">Enter password:</label>
-        <input type="text" id="passUserInput" name="passUserInput">
-        <button id="passSaveInput" class="btn btn-primary">Save</button>
+        <!-- Dropdown for selecting PassFolder -->
+        <label for="folderSelect">Select Folder to Edit:</label>
+        <select id="folderSelect" class="form-select">
+            <option value="PassFolder1">PassFolder1</option>
+            <option value="PassFolder2">PassFolder2</option>
+            <option value="PassFolder3">PassFolder3</option>
+        </select>
         <p>&nbsp</p>
-        <label for="userInput">Enter Username:</label>
+
+        <!-- Username Input -->
+        <label for="nameUserInput">Enter Username:</label>
         <input type="text" id="nameUserInput" name="nameUserInput">
         <button id="nameSaveInput" class="btn btn-primary">Save</button>
         <p>&nbsp</p>
-        <label for="userInput">Enter email:</label>
+
+        <!-- Email Input -->
+        <label for="emailUserInput">Enter Email:</label>
         <input type="text" id="emailUserInput" name="emailUserInput">
         <button id="emailSaveInput" class="btn btn-primary">Save</button>
         <p>&nbsp</p>
+
+        <!-- Password Input -->
+        <label for="passUserInput">Enter Password:</label>
+        <input type="text" id="passUserInput" name="passUserInput">
+        <button id="passSaveInput" class="btn btn-primary">Save</button>
+        <p>&nbsp</p>
+
     </div>
 
     <!-- footer -->
