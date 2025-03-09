@@ -62,6 +62,14 @@ $(document).ready(function () {
         return $("#folderSelect").val();
     }
 
+    // Save Account Name
+    $("#accSaveInput").click(function () {
+        let folder = getSelectedFolder();
+        let accUserInput = $("#accUserInput").val();
+        localStorage.setItem(folder + "_accSavedInput", accUserInput);
+        console.log("Saved Account Name for", folder, ":", accUserInput);
+    });
+
     // Save Username
     $("#nameSaveInput").click(function () {
         let folder = getSelectedFolder();
@@ -93,12 +101,14 @@ $(document).ready(function () {
         let folder = $(this).attr("id");
 
         $("#page-content-wrapper").load(page, function () {
+            let accStoredValue = localStorage.getItem(folder + "_accSavedInput") || "No account name entered";
             let nameStoredValue = localStorage.getItem(folder + "_nameSavedInput") || "No username entered";
             let emailStoredValue = localStorage.getItem(folder + "_emailSavedInput") || "No email entered";
             let passStoredValue = localStorage.getItem(folder + "_passSavedInput") || "No password entered";
 
-            console.log("Loading Page:", page, "Folder:", folder, "Data:", nameStoredValue, emailStoredValue, passStoredValue);
+            console.log("Loading Page:", page, "Folder:", folder, "Data:", accStoredValue, nameStoredValue, emailStoredValue, passStoredValue);
 
+            $("#page-content-wrapper #accDisplayData").text("Account name: " + accStoredValue);
             $("#page-content-wrapper #nameDisplayData").text("Username: " + nameStoredValue);
             $("#page-content-wrapper #emailDisplayData").text("Email: " + emailStoredValue);
             $("#page-content-wrapper #passDisplayData").text("Password: " + passStoredValue);
