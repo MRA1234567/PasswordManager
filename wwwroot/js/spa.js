@@ -23,27 +23,37 @@ $(document).ready(function () {
 });
 
 $(document).ready(function () {
-    $('#Login').click(function () {
-        $('#page-content-wrapper').load('Login.html');
-    })
-});
+    //redirect to login page if not logged in
+    if (!["/Login.html", "/SignUp.html"].includes(window.location.pathname) && localStorage.getItem("isLoggedIn") !== "true") {
+        window.location.href = "Login.html";
+    }
 
-$(document).ready(function () {
-    // Redirect to login if not logged in
-    if (window.location.pathname !== "/login.html" && localStorage.getItem("isLoggedIn") !== "true") {
-        window.location.href = "login.html";
+    $("#createLoginBtn").click(function () {
+        let inputUsername = $("#createLoginUser").val();
+        let inputPassword = $("#createLoginUser").val();
+
+        if (inputUsername && inputPassword) {
+            localstorage.setitem("storedUsername", inputUsername)
+            localstorage.setitem("storedPassword", inputPassword)
+            alert("Account created successfully. You can now log in.");
+            window.location.href = "Login.html"
+        } else {
+            alert("Please enter both a username and password.");
+        }
     }
 
     // Login functionality
     $("#loginBtn").click(function () {
         let username = $("#loginUser").val();
         let password = $("#loginPass").val();
+        let storedUsername = localStorage.getItem("storedUsername");
+        let storedPassword = localStorage.getItem("storedPassword");
 
-        if (username === "admin" && password === "password123") {
+        if (username === storedUsername && password === storedPassword) {
             localStorage.setItem("isLoggedIn", "true");
             window.location.href = "index.html";
         } else {
-            $("#loginError").show();
+            alert("Incorrect username and password");
         }
     });
 
@@ -51,6 +61,10 @@ $(document).ready(function () {
     $("#logoutBtn").click(function () {
         localStorage.removeItem("isLoggedIn");
         window.location.href = "login.html";
+    });
+
+    $("#signupBtn").click(function () {;
+        window.location.href = "SignUp.html";
     });
 
     // Function to get selected folder
