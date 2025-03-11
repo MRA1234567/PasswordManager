@@ -1,51 +1,48 @@
 ﻿$(document).ready(function () {
+    //Load html from varius html pages into the dynamic content are in index.html
     $('#PassFolder1').click(function () {
         $('#page-content-wrapper').load('PassFolder1.html');
     })
-});
 
-$(document).ready(function () {
     $('#PassFolder2').click(function () {
         $('#page-content-wrapper').load('PassFolder2.html');
     })
-});
 
-$(document).ready(function () {
     $('#PassFolder3').click(function () {
         $('#page-content-wrapper').load('PassFolder3.html');
     })
-});
 
-$(document).ready(function () {
     $('#indexPanel').click(function () {
         $('#page-content-wrapper').load('indexPanel.html');
     })
 });
 
 $(document).ready(function () {
-    //redirect to login page if not logged in
-    if (!["/Login.html", "/SignUp.html"].includes(window.location.pathname) && localStorage.getItem("isLoggedIn") !== "true") {
-        window.location.href = "Login.html";
+    // Redirect to login if not logged in (except on signup)
+    if (!["/login.html", "/SignUp.html"].includes(window.location.pathname) && localStorage.getItem("isLoggedIn") !== "true") {
+        window.location.href = "login.html";
     }
 
+    // Sign-up functionality
     $("#createLoginBtn").click(function () {
-        let inputUsername = $("#createLoginUser").val();
-        let inputPassword = $("#createLoginUser").val();
+        let newUsername = $("#createLoginUser").val();
+        let newPassword = $("#createLoginPass").val();
 
-        if (inputUsername && inputPassword) {
-            localstorage.setitem("storedUsername", inputUsername)
-            localstorage.setitem("storedPassword", inputPassword)
-            alert("Account created successfully. You can now log in.");
-            window.location.href = "Login.html"
+        if (newUsername && newPassword) {
+            localStorage.setItem("storedUsername", newUsername);
+            localStorage.setItem("storedPassword", newPassword);
+            alert("Account created successfully! You can now log in.");
+            window.location.href = "login.html"; // Redirect to login page
         } else {
             alert("Please enter both a username and password.");
         }
-    }
+    });
 
     // Login functionality
     $("#loginBtn").click(function () {
         let username = $("#loginUser").val();
         let password = $("#loginPass").val();
+
         let storedUsername = localStorage.getItem("storedUsername");
         let storedPassword = localStorage.getItem("storedPassword");
 
@@ -53,7 +50,7 @@ $(document).ready(function () {
             localStorage.setItem("isLoggedIn", "true");
             window.location.href = "index.html";
         } else {
-            alert("Incorrect username and password");
+            $("#loginError").text("Invalid username or password").show();
         }
     });
 
@@ -63,7 +60,8 @@ $(document).ready(function () {
         window.location.href = "login.html";
     });
 
-    $("#signupBtn").click(function () {;
+    // Navigate to sign-up page
+    $("#signupBtn").click(function () {
         window.location.href = "SignUp.html";
     });
 
