@@ -70,35 +70,40 @@ $(document).ready(function () {
         return $("#folderSelect").val();
     }
 
-    // Generic function to save data
-    function saveData(type, inputId) {
+    // Generic function to save data using JSON
+    function saveData() {
         let folder = getSelectedFolder();
-        let userInput = $(inputId).val();
-        localStorage.setItem(folder + "_" + type, userInput);
-        console.log(`Saved ${type} for ${folder}:`, userInput);
+        let storedData = JSON.parse(localStorage.getItem(folder)) || {};
+
+        storedData.accSavedInput = $("#accUserInput").val();
+        storedData.nameSavedInput = $("#nameUserInput").val();
+        storedData.emailSavedInput = $("#emailUserInput").val();
+        storedData.passSavedInput = $("#passUserInput").val();
+
+        localStorage.setItem(folder, JSON.stringify(storedData));
+        console.log(`Saved data for ${folder}:`, storedData);
     }
 
     // Save inputs
-    $("#accSaveInput").click(() => saveData("accSavedInput", "#accUserInput"));
-    $("#nameSaveInput").click(() => saveData("nameSavedInput", "#nameUserInput"));
-    $("#emailSaveInput").click(() => saveData("emailSavedInput", "#emailUserInput"));
-    $("#passSaveInput").click(() => saveData("passSavedInput", "#passUserInput"));
+    $("#accSaveInput, #nameSaveInput, #emailSaveInput, #passSaveInput").click(saveData);
 
     // Function to load stored data for the selected folder
     function loadData(folder) {
-        let accStoredValue = localStorage.getItem(folder + "_accSavedInput") || "No account name entered";
-        let nameStoredValue = localStorage.getItem(folder + "_nameSavedInput") || "No username entered";
-        let emailStoredValue = localStorage.getItem(folder + "_emailSavedInput") || "No email entered";
-        let passStoredValue = localStorage.getItem(folder + "_passSavedInput") || "No password entered";
+        let storedData = JSON.parse(localStorage.getItem(folder)) || {};
 
-        console.log("Loading Data for", folder, ":", accStoredValue, nameStoredValue, emailStoredValue, passStoredValue);
+        let accStoredValue = storedData.accSavedInput || "No account name entered";
+        let nameStoredValue = storedData.nameSavedInput || "No username entered";
+        let emailStoredValue = storedData.emailSavedInput || "No email entered";
+        let passStoredValue = storedData.passSavedInput || "No password entered";
+
+        console.log("Loading Data for", folder, storedData);
 
         setTimeout(() => {
             $("#accDisplayData").text("Account name: " + accStoredValue);
             $("#nameDisplayData").text("Username: " + nameStoredValue);
             $("#emailDisplayData").text("Email: " + emailStoredValue);
             $("#passDisplayData").text("Password: " + passStoredValue);
-        }, 100); // Delay to ensure elements are available
+        }, 100);
     }
 
     // Handle navigation & load stored values
@@ -108,10 +113,11 @@ $(document).ready(function () {
         let folder = $(this).attr("id");
 
         $("#page-content-wrapper").load(page, function () {
-            loadData(folder); // Load stored data into the page
+            loadData(folder);
         });
     });
 
     // Load initial data on page refresh
     loadData(getSelectedFolder());
+
 });
