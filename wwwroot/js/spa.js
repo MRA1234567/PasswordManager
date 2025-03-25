@@ -70,6 +70,19 @@ $(document).ready(function () {
         return $("#folderSelect").val();
     }
 
+    // Function to check password strength
+    function checkPasswordStrength(password) {
+        if (password.length >= 12) {
+            return "Strong";
+        } else if (password.length >= 8) {
+            return "Medium";
+        } else if (password.length >= 6) {
+            return "Weak";
+        } else {
+            return "Weak";
+        }
+    }
+
     // Generic function to save data using JSON
     function saveData() {
         let folder = getSelectedFolder();
@@ -103,7 +116,18 @@ $(document).ready(function () {
             $("#nameDisplayData").text("Username: " + nameStoredValue);
             $("#emailDisplayData").text("Email: " + emailStoredValue);
             $("#passDisplayData").text("Password: " + passStoredValue);
+
+            // Update password strength
+            updatePasswordStrength(passStoredValue);
         }, 100);
+    }
+
+    // Function to update password strength display
+    function updatePasswordStrength(password) {
+        if ($("#passStrength").length === 0) {
+            $("#passDisplayData").after('<p id="passStrength">Strength: N/A</p>');
+        }
+        $("#passStrength").text("Strength: " + checkPasswordStrength(password));
     }
 
     // Handle navigation & load stored values
